@@ -1,0 +1,11 @@
+{
+  "redis": {
+    "host": "dev-1.mokr.org",
+    "port": "6379",
+    "auth_pass": "kLjyJPPsYQIdTbEh8b4LqYPqenWtq3v1pxKtFi7CyKkV7MS9",
+    "database": "0"
+  },
+  "jwt": {
+    "key": "t12DCXXjTJvBtfOavbpeOQBF9Vje3As5"
+  }
+}
