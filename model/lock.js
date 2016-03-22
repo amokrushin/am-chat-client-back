@@ -3,11 +3,11 @@
 const redis = require( '../lib/redis' ),
     model = {};
 
-model.set = function( name, ttlS, callback ) {
+model.set = function( name, ttlMs, callback ) {
     redis.setnx( 'l:' + name, true, function( err, res ) {
         if( err ) return callback( err );
         res
-            ? redis.expire( 'l:' + name, ttlS, ()=>callback( null, true ) )
+            ? redis.pexpire( 'l:' + name, ttlMs, ()=>callback( null, true ) )
             : callback( null, false );
     } );
 };
