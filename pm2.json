@@ -1,7 +1,6 @@
 {
   "name": "am-chat-client-back",
   "script": "./app.js",
-  "exec_interpreter": "/root/.nvm/versions/node/v5.9.0/bin/node",
   "exec_mode": "fork_mode",
   "env": {
     "NODE_ENV": "production"
