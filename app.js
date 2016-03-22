@@ -1,14 +1,14 @@
 const io = require( 'socket.io' )(),
     _ = require( 'lodash' ),
     socketioJwt = require( 'socketio-jwt' ),
-    socketioRedis = require( 'socket.io-redis' ),
+//socketioRedis = require( 'socket.io-redis' ),
     logger = require( './lib/logger' ),
     userModel = require( './model/user' ),
     messageModel = require( './model/message' ),
     historyModel = require( './model/history' ),
     lockModel = require( './model/lock' ),
     config = require( './config.json' ),
-    adminUsers = ['76561198210397870'];
+    adminUsers = config.adminUsers;
 
 io.serveClient( false );
 
@@ -94,7 +94,6 @@ io.on( 'connection', function( socket ) {
         lockModel.set( 'history-prev-request-' + message.timestamp, 2000, function( err, ok ) {
             if( err ) return logger.error( err );
             if( !ok ) return;
-            console.log( 'history-prev-request', message );
             messageModel.offset( 'public', message, function( err, index ) {
                 if( !index ) return;
                 historyModel.range( 'public', 20, index + 1, function( err, messages ) {
@@ -120,7 +119,6 @@ io.on( 'connection', function( socket ) {
     socket.on( 'remove-user-messages', function( room, user ) {
         messageModel.removeAllByUserId( room || 'public', user.id, function( err, messageIds ) {
             if( err ) return logger.error( err );
-            console.log( 'messageIds.length', messageIds.length );
             socket.emit( 'history-replace', {
                 messages: messageIds
             } );

@@ -1,11 +1,14 @@
 {
   "redis": {
-    "host": "dev-1.mokr.org",
+    "host": "example.com",
     "port": "6379",
-    "auth_pass": "kLjyJPPsYQIdTbEh8b4LqYPqenWtq3v1pxKtFi7CyKkV7MS9",
+    "auth_pass": "m1CEHIcXjp2jqRztwU0786nq7jt6E13j",
     "database": "0"
   },
   "jwt": {
     "key": "t12DCXXjTJvBtfOavbpeOQBF9Vje3As5"
-  }
+  },
+  "adminUsers": [
+    "76561198210397867"
+  ]
 }
