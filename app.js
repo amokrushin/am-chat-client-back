@@ -64,6 +64,7 @@ function sendMessage( socket, message, done ) {
 }
 
 io.on( 'connection', function( socket ) {
+    logger.info( 'new connection', socket.id );
     socket.user = _.omit( socket.decoded_token, ['iat'] );
 
     newUser( socket, socket.user );
@@ -78,7 +79,7 @@ io.on( 'connection', function( socket ) {
     } );
 
     socket.on( 'history-request', function() {
-        lockModel.set( 'history-request', 2000, function( err, ok ) {
+        lockModel.set( 'history-request', 2, function( err, ok ) {
             if( err ) return logger.error( err );
             if( !ok ) return;
 
@@ -91,7 +92,7 @@ io.on( 'connection', function( socket ) {
     } );
 
     socket.on( 'history-prev-request', function( message ) {
-        lockModel.set( 'history-prev-request-' + message.timestamp, 2000, function( err, ok ) {
+        lockModel.set( 'history-prev-request-' + message.timestamp, 2, function( err, ok ) {
             if( err ) return logger.error( err );
             if( !ok ) return;
             messageModel.offset( 'public', message, function( err, index ) {
