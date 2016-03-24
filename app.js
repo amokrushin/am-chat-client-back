@@ -18,6 +18,11 @@ io.use( socketioJwt.authorize( {
 } ) );
 
 function newUser( socket, profile, callback ) {
+    if( !socket.user.id )
+    {
+        if( callback ) callback();
+        return;
+    }
     userModel.upsert( profile, function( err, profile ) {
         socket.broadcast.emit( 'new-user', profile );
         _.assign( socket.user, profile );
@@ -70,11 +75,13 @@ io.on( 'connection', function( socket ) {
     newUser( socket, socket.user );
 
     socket.on( 'get-self', function( done ) {
+        if( !socket.user.id ) return done( null );
         const isAdmin = !!~adminUsers.indexOf( socket.user.id.toString() );
         done( _.assign( {isAdmin: isAdmin}, socket.user ) );
     } );
 
     socket.on( 'send-message', function( message, done ) {
+        if( !socket.user.id ) return done();
         sendMessage( socket, message, done );
     } );
 
